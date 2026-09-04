@@ -11,7 +11,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/unauthorized-action', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::name('frontend.')->group(function () {
     Route::controller(FrontendHomeController::class)->group(function () {
