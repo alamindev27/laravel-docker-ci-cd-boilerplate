@@ -23,6 +23,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return abort(403, 'Unauthorized action.');
+        if (auth()->user()->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        } else {
+            return redirect()->route('user.dashboard');
+        }
     }
 }

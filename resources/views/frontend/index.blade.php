@@ -89,7 +89,7 @@
                         class="text-xs sm:text-sm font-medium bg-slate-800/80 hover:bg-slate-700 text-slate-200 px-3 py-2 rounded-xl transition border border-slate-700 shadow-lg shadow-indigo-500/10">Admin
                         Panel</a>
                 @else
-                    <a href="{{ route('dashboard') }}"
+                    <a href="{{ route('user.dashboard') }}"
                         class="text-xs sm:text-sm font-medium bg-slate-800/80 hover:bg-slate-700 text-slate-200 px-3 py-2 rounded-xl transition border border-slate-700 shadow-lg shadow-indigo-500/10">Dashboard</a>
                 @endif
 
@@ -146,7 +146,7 @@
                         class="w-full sm:w-auto bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-medium px-8 py-3.5 rounded-xl transition shadow-xl shadow-indigo-600/30 text-center">Go
                         to Admin Panel</a>
                 @else
-                    <a href="{{ route('dashboard') }}"
+                    <a href="{{ route('user.dashboard') }}"
                         class="w-full sm:w-auto bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-medium px-8 py-3.5 rounded-xl transition shadow-xl shadow-indigo-600/30 text-center">Go
                         to Dashboard</a>
                 @endif
