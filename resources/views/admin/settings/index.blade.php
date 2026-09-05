@@ -1,58 +1,7 @@
 @extends('admin.layouts.admin')
 
 @section('content')
-    @php
-        $currentTab = request('tab', 'general');
-        $tabs = [
-            'general' => [
-                'name' => 'General',
-                'fields' => [
-                    ['key' => 'site_name', 'label' => 'Site Name', 'type' => 'text', 'required' => true],
-                    ['key' => 'site_tagline', 'label' => 'Site Tagline', 'type' => 'text'],
-                    ['key' => 'site_email', 'label' => 'Site Email', 'type' => 'email'],
-                    ['key' => 'site_phone', 'label' => 'Site Phone', 'type' => 'text'],
-                    ['key' => 'site_address', 'label' => 'Site Address', 'type' => 'text'],
-                    ['key' => 'author_name', 'label' => 'Author Name', 'type' => 'text'],
-                ],
-                'files' => ['site_logo', 'site_favicon'],
-            ],
-            'smtp' => [
-                'name' => 'SMTP & Mail',
-                'fields' => [
-                    ['key' => 'mail_mailer', 'label' => 'Mail Mailer', 'type' => 'text', 'required' => true],
-                    ['key' => 'mail_host', 'label' => 'Mail Host', 'type' => 'text', 'required' => true],
-                    ['key' => 'mail_port', 'label' => 'Mail Port', 'type' => 'text', 'required' => true],
-                    ['key' => 'mail_username', 'label' => 'Mail Username', 'type' => 'text', 'required' => true],
-                    ['key' => 'mail_password', 'label' => 'Mail Password', 'type' => 'password', 'required' => true],
-                    ['key' => 'mail_encryption', 'label' => 'Mail Encryption', 'type' => 'text', 'required' => true],
-                    ['key' => 'mail_from_address', 'label' => 'Sender Email', 'type' => 'email', 'required' => true],
-                    ['key' => 'mail_from_name', 'label' => 'Sender Name', 'type' => 'text', 'required' => true],
-                ],
-            ],
-            'social' => [
-                'name' => 'Social Links',
-                'fields' => [
-                    ['key' => 'facebook_url', 'label' => 'Facebook URL', 'type' => 'url'],
-                    ['key' => 'instagram_url', 'label' => 'Instagram URL', 'type' => 'url'],
-                    ['key' => 'twitter_url', 'label' => 'Twitter / X URL', 'type' => 'url'],
-                    ['key' => 'linkedin_url', 'label' => 'LinkedIn URL', 'type' => 'url'],
-                    ['key' => 'github_url', 'label' => 'GitHub URL', 'type' => 'url'],
-                    ['key' => 'youtube_url', 'label' => 'YouTube URL', 'type' => 'url'],
-                ],
-            ],
-            'system' => [
-                'name' => 'System & Mode',
-                'selects' => [
-                    [
-                        'key' => 'maintenance_mode',
-                        'label' => 'Maintenance Mode Status',
-                        'options' => [1 => 'Active (Show Maintenance Page)', 0 => 'Inactive (Site Live)'],
-                        'required' => true,
-                    ],
-                ],
-            ],
-        ];
-    @endphp
+
 
     <div class="py-2">
         <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 space-y-6">
@@ -98,7 +47,7 @@
                         </p>
                     </div>
 
-                    {{-- ট্যাব নেভিগেশন (flex-nowrap দিয়ে এক লাইনে ফিক্স করা হয়েছে) --}}
+                    {{-- ট্যাব নেভিগেশন (flex-nowrap দিয়ে এক লাইনে ফিক্স করা হয়েছে) --}}
                     <div
                         class="flex flex-nowrap items-center gap-1 bg-slate-100 dark:bg-slate-800/80 p-1.5 rounded-xl border border-slate-200/60 dark:border-slate-700/60 overflow-x-auto xl:overflow-visible">
                         @foreach ($tabs as $key => $tab)
@@ -112,7 +61,7 @@
                 </div>
             </div>
 
-            {{-- ডাইনামিক ফর্ম (মাত্র একটি ফর্ম দিয়ে সব হ্যান্ডেল হবে) --}}
+            {{-- ডাইনামিক ফর্ম (মাত্র একটি ফর্ম দিয়ে সব হ্যান্ডেল হবে) --}}
             <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -125,76 +74,59 @@
                         {{ $tabs[$currentTab]['name'] }} Configuration
                     </h3>
 
-                    {{-- সাধারণ টেক্সট/ইমেইল/ইউআরএল ইনপুট ফিল্ড লুপ --}}
-                    @if (isset($tabs[$currentTab]['fields']))
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            @foreach ($tabs[$currentTab]['fields'] as $field)
-                                @php $setting = $settings[$field['key']] ?? null; @endphp
-                                <div
-                                    class="{{ in_array($field['type'], ['text', 'url']) && count($tabs[$currentTab]['fields']) <= 3 ? 'col-span-2' : '' }}">
-                                    <label
-                                        class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
-                                        {{ $field['label'] }}
-                                        @if (isset($field['required']))
-                                            <span class="text-rose-500">*</span>
-                                        @endif
-                                    </label>
-                                    <input type="{{ $field['type'] }}" name="{{ $field['key'] }}"
-                                        value="{{ old($field['key'], $setting->value ?? '') }}"
-                                        class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" autocomplete="off">
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
+                    {{-- সব ফিল্ড এক লুপে ডাইনামিক্যালি রেন্ডার হবে --}}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        @foreach ($tabs[$currentTab]['fields'] ?? [] as $field)
+                            @php
+                                $setting = $settings[$field['key']] ?? null;
+                                $isFullWidth =
+                                    in_array($field['type'], ['text', 'url']) &&
+                                    in_array($field['key'], ['site_address', 'site_tagline']);
+                            @endphp
 
-                    {{-- সিলেক্ট ড্রপডাউন ফিল্ড লুপ (যেমন: Maintenance Mode) --}}
-                    @if (isset($tabs[$currentTab]['selects']))
-                        @foreach ($tabs[$currentTab]['selects'] as $select)
-                            @php $setting = $settings[$select['key']] ?? null; @endphp
-                            <div>
+                            <div class="{{ $isFullWidth ? 'col-span-2' : '' }}">
                                 <label
                                     class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
-                                    {{ $select['label'] }}
-                                    @if (isset($select['required']))
+                                    {{ $field['label'] }}
+                                    @if (isset($field['required']) && $field['required'])
                                         <span class="text-rose-500">*</span>
                                     @endif
                                 </label>
-                                <select name="{{ $select['key'] }}"
-                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
-                                    @foreach ($select['options'] as $val => $label)
-                                        <option value="{{ $val }}"
-                                            {{ old($select['key'], $setting->value ?? '') == $val ? 'selected' : '' }}>
-                                            {{ $label }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        @endforeach
-                    @endif
 
-                    {{-- লোগো বা ফাইলের ফিল্ড থাকলে --}}
-                    @if (isset($tabs[$currentTab]['files']))
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-                            @foreach ($tabs[$currentTab]['files'] as $fileKey)
-                                @php $setting = $settings[$fileKey] ?? null; @endphp
-                                <div
-                                    class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
-                                    <label
-                                        class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
-                                        {{ ucwords(str_replace('_', ' ', $fileKey)) }}
-                                    </label>
-                                    <div class="flex items-center gap-4">
+                                {{-- ১. যদি ড্রপডাউন (select) হয় --}}
+                                @if ($field['type'] === 'select')
+                                    <select name="{{ $field['key'] }}"
+                                        class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                                        @foreach ($field['options'] as $val => $label)
+                                            <option value="{{ $val }}"
+                                                {{ old($field['key'], $setting->value ?? '') == $val ? 'selected' : '' }}>
+                                                {{ $label }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                    {{-- ২. যদি ফাইল বা লোগো আপলোড হয় --}}
+                                @elseif ($field['type'] === 'file')
+                                    <div
+                                        class="flex items-center gap-4 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-100 dark:border-slate-800 col-span-2">
                                         @if ($setting && $setting->value)
-                                            <img src="{{ asset($setting->value) }}" alt="{{ $fileKey }}"
+                                            <img src="{{ asset($setting->value) }}" alt="{{ $field['label'] }}"
                                                 class="w-10 h-10 object-contain bg-white dark:bg-slate-800 p-1 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm">
                                         @endif
-                                        <input type="file" name="{{ $fileKey }}"
+                                        <input type="file" name="{{ $field['key'] }}"
                                             class="block w-full text-xs text-slate-500 dark:text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:font-semibold file:bg-indigo-50 file:text-indigo-700 dark:file:bg-indigo-900/40 dark:file:text-indigo-300 cursor-pointer">
                                     </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
+
+                                    {{-- ৩. সাধারণ টেক্সট, পাসওয়ার্ড, ইমেইল বা ইউআরএল ইনপুট --}}
+                                @else
+                                    <input type="{{ $field['type'] }}" name="{{ $field['key'] }}"
+                                        value="{{ old($field['key'], $setting->value ?? '') }}"
+                                        class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+                                        autocomplete="off">
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
 
                     <div class="flex justify-end pt-6 mt-8 border-t border-slate-100 dark:border-slate-800">
                         <button type="submit"

@@ -8,11 +8,16 @@ use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $settings = Setting::all()->keyBy('key');
+        $currentTab = $request->get('tab', 'general');
+        $tabs = config('settings.tabs');
+        if (! array_key_exists($currentTab, $tabs)) {
+            $currentTab = 'general';
+        }
+        $settings = Setting::where('group', $currentTab)->get()->keyBy('key');
 
-        return view('admin.settings.index', compact('settings'));
+        return view('admin.settings.index', compact('settings', 'currentTab', 'tabs'));
     }
 
     public function update(Request $request)
