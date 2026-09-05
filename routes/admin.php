@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\SettingController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -16,4 +17,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/change-password', 'changePassowrd')->name('change-password');
         Route::put('/password-update', 'updatePassword')->name('password.update');
     });
+
+    Route::controller(SettingController::class)->group(function () {
+        Route::get('/settings', 'index')->name('settings.index');
+        Route::put('/settings', 'update')->name('settings.update');
+    });
+
 });

@@ -13,7 +13,7 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::name('frontend.')->group(function () {
+Route::name('frontend.')->middleware('CheckMaintenanceMode')->group(function () {
     Route::controller(FrontendHomeController::class)->group(function () {
         Route::get('/', 'index')->name('index');
     });
