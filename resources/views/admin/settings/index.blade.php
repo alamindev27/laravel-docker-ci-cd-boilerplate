@@ -78,21 +78,37 @@
                 </div>
             @endif
 
-            {{-- হেডার এবং ট্যাব নেভিগেশন --}}
+            {{-- হেডার এবং ট্যাব নেভিগেশন (এক লাইনে ফিক্সড) --}}
             <div
-                class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
-                <div>
-                    <h2 class="text-2xl font-bold text-slate-800 dark:text-white"><span class="capitalize">{{ $currentTab }}</span> Management</h2>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Configure your app settings independently.</p>
-                </div>
+                class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 sm:p-5 rounded-2xl shadow-sm">
+                <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4">
 
-                <div class="flex flex-wrap gap-2 bg-slate-100 dark:bg-slate-800 p-1.5 rounded-xl">
-                    @foreach ($tabs as $key => $tab)
-                        <a href="{{ route('admin.settings.index', ['tab' => $key]) }}"
-                            class="px-4 py-2 text-xs font-semibold rounded-lg transition {{ $currentTab === $key ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }}">
-                            {{ $tab['name'] }}
-                        </a>
-                    @endforeach
+                    {{-- টাইটেল এবং সাবটাইটেল সেকশন --}}
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-3">
+                            <div class="w-2.5 h-8 bg-indigo-600 rounded-full"></div>
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                                <span class="capitalize">{{ $currentTab }}</span> Management
+                            </h2>
+                        </div>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 pl-5">
+                            Configure and manage your <span
+                                class="font-medium text-slate-700 dark:text-slate-300 capitalize">{{ $currentTab }}</span>
+                            settings securely and independently.
+                        </p>
+                    </div>
+
+                    {{-- ট্যাব নেভিগেশন (flex-nowrap দিয়ে এক লাইনে ফিক্স করা হয়েছে) --}}
+                    <div
+                        class="flex flex-nowrap items-center gap-1 bg-slate-100 dark:bg-slate-800/80 p-1.5 rounded-xl border border-slate-200/60 dark:border-slate-700/60 overflow-x-auto xl:overflow-visible">
+                        @foreach ($tabs as $key => $tab)
+                            <a href="{{ route('admin.settings.index', ['tab' => $key]) }}"
+                                class="px-3.5 py-2 text-xs sm:text-sm font-semibold rounded-lg transition-all duration-200 whitespace-nowrap flex items-center justify-center {{ $currentTab === $key ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm border border-slate-200/50 dark:border-slate-800' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-slate-800' }}">
+                                {{ is_array($tab) ? $tab['name'] : $tab }}
+                            </a>
+                        @endforeach
+                    </div>
+
                 </div>
             </div>
 
@@ -125,7 +141,7 @@
                                     </label>
                                     <input type="{{ $field['type'] }}" name="{{ $field['key'] }}"
                                         value="{{ old($field['key'], $setting->value ?? '') }}"
-                                        class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                                        class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" autocomplete="off">
                                 </div>
                             @endforeach
                         </div>
