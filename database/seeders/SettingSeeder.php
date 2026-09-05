@@ -58,6 +58,21 @@ class SettingSeeder extends Seeder
                 'value' => '0',
                 'type' => 'boolean',
             ],
+            ['key' => 'facebook_url', 'value' => '', 'type' => 'text'],
+            ['key' => 'instagram_url', 'value' => '', 'type' => 'text'],
+            ['key' => 'twitter_url', 'value' => '', 'type' => 'text'],
+            ['key' => 'linkedin_url', 'value' => '', 'type' => 'text'],
+            ['key' => 'github_url', 'value' => '', 'type' => 'text'],
+            ['key' => 'youtube_url', 'value' => '', 'type' => 'text'],
+
+            ['key' => 'mail_mailer', 'value' => 'smtp', 'type' => 'text'],
+            ['key' => 'mail_host', 'value' => '', 'type' => 'text'],
+            ['key' => 'mail_port', 'value' => '', 'type' => 'text'],
+            ['key' => 'mail_username', 'value' => '', 'type' => 'text'],
+            ['key' => 'mail_password', 'value' => '', 'type' => 'text'],
+            ['key' => 'mail_encryption', 'value' => 'tls', 'type' => 'text'],
+            ['key' => 'mail_from_address', 'value' => '', 'type' => 'text'],
+            ['key' => 'mail_from_name', 'value' => '', 'type' => 'text'],
         ];
 
         foreach ($settings as $setting) {

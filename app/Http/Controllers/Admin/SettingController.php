@@ -17,38 +17,62 @@ class SettingController extends Controller
 
     public function update(Request $request)
     {
-        $settings = Setting::all();
+        $activeTab = $request->input('active_tab', 'general');
 
-        foreach ($settings as $setting) {
-            $key = $setting->key;
+        // প্রতিটি ট্যাবের জন্য আলাদা ভ্যালিডেশন রুলস অ্যারে
+        $rules = [
+            'general' => [
+                'site_name' => 'nullable|string|max:255',
+                'site_tagline' => 'nullable|string|max:255',
+                'site_email' => 'nullable|email|max:255',
+                'site_phone' => 'nullable|string|max:50',
+                'site_address' => 'nullable|string|max:500',
+                'author_name' => 'nullable|string|max:255',
+                'site_logo' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:2048',
+                'site_favicon' => 'nullable|image|mimes:jpeg,png,jpg,webp,ico|max:1024',
+            ],
+            'smtp' => [
+                'mail_mailer' => 'required|string|max:50',
+                'mail_host' => 'required|string|max:255',
+                'mail_port' => 'required|string|max:20',
+                'mail_username' => 'required|string|max:255',
+                'mail_password' => 'required|string|max:255',
+                'mail_encryption' => 'required|string|max:50',
+                'mail_from_address' => 'required|email|max:255',
+                'mail_from_name' => 'required|string|max:255',
+            ],
+            'social' => [
+                'facebook_url' => 'nullable|url|max:255',
+                'instagram_url' => 'nullable|url|max:255',
+                'twitter_url' => 'nullable|url|max:255',
+                'linkedin_url' => 'nullable|url|max:255',
+                'github_url' => 'nullable|url|max:255',
+                'youtube_url' => 'nullable|url|max:255',
+            ],
+            'system' => [
+                'maintenance_mode' => 'required|in:0,1',
+            ],
+        ];
 
-            if ($setting->type === 'file') {
-                if ($request->hasFile($key)) {
-                    // পুরনো ফাইল ডিলিট করা (যদি ডিফল্ট ফোল্ডারে না থাকে)
-                    if ($setting->value && file_exists(public_path($setting->value)) && ! str_contains($setting->value, 'default')) {
-                        @unlink(public_path($setting->value));
-                    }
+        // বর্তমান ট্যাবের রুলস দিয়ে ভ্যালিডেশন রান করা (ট্যাব না মিললে ফাঁকা অ্যারে পাস হবে)
+        $request->validate($rules[$activeTab] ?? []);
 
-                    $file = $request->file($key);
-                    $filename = time().'_'.uniqid().'.'.$file->getClientOriginalExtension();
+        // ডাটা আপডেট লজিক
+        foreach ($request->except(['_token', '_method', 'active_tab']) as $key => $value) {
+            if ($request->hasFile($key)) {
+                // ফাইল আপলোড হ্যান্ডেলিং (যদি লোকাল স্টোরেজে রাখতে চান)
+                $file = $request->file($key);
+                $filename = time().'_'.uniqid().'.'.$file->getClientOriginalExtension();
+                $file->move(public_path('uploads/settings'), $filename);
+                $value = 'uploads/settings/'.$filename;
 
-                    $destinationPath = public_path('uploads/settings');
-                    if (! file_exists($destinationPath)) {
-                        mkdir($destinationPath, 0755, true);
-                    }
-
-                    $file->move($destinationPath, $filename);
-
-                    $setting->update(['value' => 'uploads/settings/'.$filename]);
-                }
+                Setting::updateOrCreate(['key' => $key], ['value' => $value]);
             } else {
-                // Text বা Boolean ফিল্ডের জন্য
-                if ($request->has($key)) {
-                    $setting->update(['value' => $request->input($key)]);
-                }
+                Setting::updateOrCreate(['key' => $key], ['value' => $value]);
             }
         }
 
-        return redirect()->route('admin.settings.index')->with('success', 'Settings updated successfully.');
+        return redirect()->route('admin.settings.index', ['tab' => $activeTab])
+            ->with('success', ucfirst($activeTab).' settings updated successfully!');
     }
 }
