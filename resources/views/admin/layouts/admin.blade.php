@@ -50,6 +50,8 @@
             }
         }
     </script>
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
@@ -59,12 +61,12 @@
     </style>
     <script>
         // পেজ লোড হওয়ার সাথে সাথেই localStorage চেক করে dark ক্লাস নিশ্চিত করবে
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia(
+                '(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
         }
-
     </script>
 
     @yield('header')
@@ -105,7 +107,66 @@
 
     </div>
 
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     @yield('footer')
+
+
+    <script>
+        // SweetAlert2 কমন টোস্টার কনফিগারেশন
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
+        // সেশন সাকসেস নোটিফিকেশন
+        @if (session('success'))
+            Toast.fire({
+                icon: 'success',
+                background: '#198754',
+                color: '#fff',
+                title: '{{ session('success') }}'
+            });
+        @endif
+
+        // সেশন এরর নোটিফিকেশন
+        @if (session('error'))
+            Toast.fire({
+                icon: 'error',
+                background: '#dc3545',
+                color: '#fff',
+                title: '{{ session('error') }}'
+            });
+        @endif
+
+        function confirmDelete(form) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this backup file!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // ইউজার কনফার্ম করলে এখন ফর্ম সাবমিট হবে
+                }
+            });
+        }
+    </script>
+
+
+
 </body>
 
 </html>

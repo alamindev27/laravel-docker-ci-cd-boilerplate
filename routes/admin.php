@@ -16,7 +16,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/backups', 'index')->name('backups.index');
         Route::get('/backups/create', 'create')->name('backups.create');
         Route::get('/backups/download/{file_name}', 'download')->name('backups.download');
-        Route::delete('/backups/delete/{file_name}', 'destroy')->name('backups.destroy');
+        Route::delete('/backups/delete/{file_name}', 'destroy')->name('backups.delete');
     });
 
     // for profile

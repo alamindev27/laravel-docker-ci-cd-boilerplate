@@ -37,14 +37,11 @@ class BackupController extends Controller
     public function create()
     {
         try {
-            ini_set('max_execution_time', 600);
             Artisan::call('backup:run');
 
-            return redirect()->route('admin.backups.index')
-                ->with('success', 'Backup created successfully!');
+            return redirect()->back()->with('success', 'Backup created successfully!');
         } catch (Exception $e) {
-            return redirect()->route('admin.backups.index')
-                ->with('error', 'Backup failed: '.$e->getMessage());
+            return redirect()->back()->with('error', 'Backup failed: '.$e->getMessage());
         }
     }
 
