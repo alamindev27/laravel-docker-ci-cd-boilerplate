@@ -19,3 +19,16 @@ if (! function_exists('setting')) {
         return $settings[$key] ?? $default;
     }
 }
+
+if (! function_exists('app_version')) {
+    function app_version()
+    {
+        $path = base_path('version.txt');
+
+        if (file_exists($path)) {
+            return trim(file_get_contents($path));
+        }
+
+        return 'v1.0.0';
+    }
+}
