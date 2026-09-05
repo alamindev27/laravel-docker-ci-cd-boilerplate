@@ -38,4 +38,4 @@ jobs:
         run: |
           git add version.txt
           git commit -m "chore: auto-update version.txt to ${{ steps.get_tag.outputs.tag }} [skip ci]" || echo "No changes to commit"
-          git push
+          git push origin HEAD:main
