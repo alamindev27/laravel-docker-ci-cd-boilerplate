@@ -1,0 +1,41 @@
+name: Auto Update Version from Git Tag
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Git config
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Get Latest Git Tag
+        id: get_tag
+        run: |
+          TAG=$(git describe --tags --abbrev=0)
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "Latest tag is: $TAG"
+
+      - name: Update version.txt file
+        run: |
+          echo "${{ steps.get_tag.outputs.tag }}" > version.txt
+
+      - name: Commit and Push version.txt changes
+        run: |
+          git add version.txt
+          git commit -m "chore: auto-update version.txt to ${{ steps.get_tag.outputs.tag }} [skip ci]" || echo "No changes to commit"
+          git push
