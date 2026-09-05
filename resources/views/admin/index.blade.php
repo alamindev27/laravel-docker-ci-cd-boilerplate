@@ -1,6 +1,8 @@
 @extends('admin.layouts.admin')
 
-@section('title', 'Dashboard')
+@section('header')
+    <title>Admin Dashboard</title>
+@endsection
 
 @section('content')
     <div class="space-y-6">
@@ -100,4 +102,8 @@
         </div>
 
     </div>
+@endsection
+
+@section('footer')
+
 @endsection
