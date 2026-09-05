@@ -79,12 +79,9 @@
                         @foreach ($tabs[$currentTab]['fields'] ?? [] as $field)
                             @php
                                 $setting = $settings[$field['key']] ?? null;
-                                $isFullWidth =
-                                    in_array($field['type'], ['text', 'url']) &&
-                                    in_array($field['key'], ['site_address', 'site_tagline']);
                             @endphp
 
-                            <div class="{{ $isFullWidth ? 'col-span-2' : '' }}">
+                            <div class="">
                                 <label
                                     class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
                                     {{ $field['label'] }}
