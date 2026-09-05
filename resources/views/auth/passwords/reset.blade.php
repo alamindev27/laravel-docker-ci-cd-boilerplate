@@ -54,16 +54,16 @@
                 <p class="text-xs sm:text-sm text-slate-400">Please enter your new password below.</p>
             </div>
 
-            <form method="POST" action="{{ route('password.store') }}" class="space-y-4">
+            <form method="POST" action="{{ route('password.update') }}" class="space-y-4">
                 @csrf
 
                 <!-- Password Reset Token -->
-                <input type="hidden" name="token" value="{{ $request->route('token') }}">
+                <input type="hidden" name="token" value="{{ $token }}">
 
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Email
                         Address</label>
-                    <input type="email" name="email" value="{{ old('email', $request->email) }}" required autofocus
+                    <input type="email" name="email" value="{{ old('email', request('email')) }}" required autofocus
                         class="w-full bg-slate-950/60 border border-slate-800 rounded-xl px-4 py-3 text-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition text-sm">
                 </div>
 
