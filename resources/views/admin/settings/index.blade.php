@@ -6,13 +6,6 @@
     <div class="py-2">
         <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
-            {{-- সাকসেস মেসেজ --}}
-            @if (session('success'))
-                <div
-                    class="bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 px-4 py-3 rounded-xl shadow-sm">
-                    {{ session('success') }}
-                </div>
-            @endif
 
             {{-- গ্লোবাল ভ্যালিডেশন এরর --}}
             @if ($errors->any())
