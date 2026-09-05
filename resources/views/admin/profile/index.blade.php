@@ -4,18 +4,20 @@
 <div class="py-12">
     <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
 
+        {{-- সাকসেস মেসেজ অ্যালার্ট --}}
         @if(session('success'))
-            <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative shadow-sm" role="alert">
+            <div class="mb-4 bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 px-4 py-3 rounded-xl relative shadow-sm" role="alert">
                 <span class="block sm:inline">{{ session('success') }}</span>
             </div>
         @endif
 
-        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6 sm:p-8">
-            <div class="flex justify-between items-center border-b pb-4 mb-6">
-                <h2 class="text-2xl font-bold text-gray-800">Admin Profile Details</h2>
+        {{-- মূল কার্ড --}}
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xl sm:rounded-2xl p-6 sm:p-8">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+                <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Admin Profile Details</h2>
 
                 @if (Route::has('admin.profile.edit'))
-                    <a href="{{ route('admin.profile.edit') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-md shadow transition duration-200 text-sm">
+                    <a href="{{ route('admin.profile.edit') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-xl shadow transition duration-200 text-sm">
                         Edit Profile
                     </a>
                 @endif
@@ -31,23 +33,24 @@
                 <div class="flex flex-col items-center">
                     <img src="{{ $avatarUrl }}"
                          alt="Avatar"
-                         class="w-36 h-36 rounded-full object-cover shadow-md border-4 border-indigo-500">
-                    <span class="text-xs text-gray-400 mt-2">Active Avatar</span>
+                         class="w-36 h-36 rounded-full object-cover shadow-md border-4 border-indigo-500 dark:border-indigo-400">
+                    <span class="text-xs text-slate-400 dark:text-slate-500 mt-2">Active Avatar</span>
                 </div>
+
                 <div class="flex-1 w-full space-y-4">
-                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Full Name</label>
-                        <p class="text-lg font-medium text-gray-800 mt-1">{{ $user->name }}</p>
+                    <div class="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+                        <label class="block text-xs font-semibold text-slate-400 dark:text-slate-400 uppercase tracking-wider">Full Name</label>
+                        <p class="text-lg font-medium text-slate-800 dark:text-white mt-1">{{ $user->name }}</p>
                     </div>
 
-                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Email Address</label>
-                        <p class="text-lg font-medium text-gray-800 mt-1">{{ $user->email }}</p>
+                    <div class="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+                        <label class="block text-xs font-semibold text-slate-400 dark:text-slate-400 uppercase tracking-wider">Email Address</label>
+                        <p class="text-lg font-medium text-slate-800 dark:text-white mt-1">{{ $user->email }}</p>
                     </div>
 
-                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Account Role / Type</label>
-                        <p class="text-lg font-medium text-indigo-600 mt-1">Administrator</p>
+                    <div class="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+                        <label class="block text-xs font-semibold text-slate-400 dark:text-slate-400 uppercase tracking-wider">Account Role / Type</label>
+                        <p class="text-lg font-medium text-indigo-600 dark:text-indigo-400 mt-1">Administrator</p>
                     </div>
                 </div>
             </div>

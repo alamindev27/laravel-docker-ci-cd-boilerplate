@@ -57,6 +57,16 @@
             display: none !important;
         }
     </style>
+    <script>
+        // পেজ লোড হওয়ার সাথে সাথেই localStorage চেক করে dark ক্লাস নিশ্চিত করবে
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+    </script>
+
     @yield('header')
 </head>
 
