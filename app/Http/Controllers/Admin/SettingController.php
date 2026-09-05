@@ -41,7 +41,7 @@ class SettingController extends Controller
                 'mail_host' => 'required|string|max:255',
                 'mail_port' => 'required|string|max:20',
                 'mail_username' => 'required|string|max:255',
-                'mail_password' => 'required|string|max:255',
+                'mail_password' => 'nullable|string|max:255', // পাসওয়ার্ড খালি থাকতে পারে (যদি পরিবর্তন না করতে চায়)
                 'mail_encryption' => 'required|string|max:50',
                 'mail_from_address' => 'required|email|max:255',
                 'mail_from_name' => 'required|string|max:255',
@@ -56,25 +56,37 @@ class SettingController extends Controller
             ],
             'system' => [
                 'maintenance_mode' => 'required|in:0,1',
+                'app_timezone' => 'required|string|max:100',
             ],
         ];
 
-        // বর্তমান ট্যাবের রুলস দিয়ে ভ্যালিডেশন রান করা (ট্যাব না মিললে ফাঁকা অ্যারে পাস হবে)
+        // বর্তমান ট্যাবের রুলস দিয়ে ভ্যালিডেশন রান করা
         $request->validate($rules[$activeTab] ?? []);
 
         // ডাটা আপডেট লজিক
         foreach ($request->except(['_token', '_method', 'active_tab']) as $key => $value) {
+
+            // ১. SMTP পাসওয়ার্ড ফিল্ড খালি থাকলে ডাটাবেজের পুরনো পাসওয়ার্ড ওভাররাইট হওয়া থেকে বাঁচাবে
+            if ($key === 'mail_password' && empty($value)) {
+                continue;
+            }
+
             if ($request->hasFile($key)) {
-                // ফাইল আপলোড হ্যান্ডেলিং (যদি লোকাল স্টোরেজে রাখতে চান)
+                // ফাইল আপলোড হ্যান্ডেলিং
                 $file = $request->file($key);
                 $filename = time().'_'.uniqid().'.'.$file->getClientOriginalExtension();
                 $file->move(public_path('uploads/settings'), $filename);
                 $value = 'uploads/settings/'.$filename;
-
-                Setting::updateOrCreate(['key' => $key], ['value' => $value]);
-            } else {
-                Setting::updateOrCreate(['key' => $key], ['value' => $value]);
             }
+
+            // ২. গ্রুপ বা ট্যাব নাম সহ সেটিংস সেভ করা
+            Setting::updateOrCreate(
+                ['key' => $key],
+                [
+                    'value' => $value,
+                    'group' => $activeTab,
+                ]
+            );
         }
 
         return redirect()->route('admin.settings.index', ['tab' => $activeTab])

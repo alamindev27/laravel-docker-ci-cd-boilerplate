@@ -31,6 +31,19 @@ class AppServiceProvider extends ServiceProvider
                     Config::set('app.timezone', $timezone);
                 }
             }
+
+            // ২. SMTP dynamic setting
+            $mailMailer = function_exists('setting') ? setting('mail_mailer') : null;
+            if ($mailMailer) {
+                Config::set('mail.default', $mailMailer);
+                Config::set('mail.mailers.smtp.host', setting('mail_host'));
+                Config::set('mail.mailers.smtp.port', setting('mail_port'));
+                Config::set('mail.mailers.smtp.encryption', setting('mail_encryption'));
+                Config::set('mail.mailers.smtp.username', setting('mail_username'));
+                Config::set('mail.mailers.smtp.password', setting('mail_password'));
+                Config::set('mail.from.address', setting('mail_from_address'));
+                Config::set('mail.from.name', setting('mail_from_name'));
+            }
         } catch (\Exception $e) {
             // কোনো এক্সেপশন বা ডাটাবেজ কানেকশন ইস্যু হলে বাইপাস করবে
         }
