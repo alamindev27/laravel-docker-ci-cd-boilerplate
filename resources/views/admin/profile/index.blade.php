@@ -4,12 +4,6 @@
 <div class="py-12">
     <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
 
-        {{-- সাকসেস মেসেজ অ্যালার্ট --}}
-        @if(session('success'))
-            <div class="mb-4 bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 px-4 py-3 rounded-xl relative shadow-sm" role="alert">
-                <span class="block sm:inline">{{ session('success') }}</span>
-            </div>
-        @endif
 
         {{-- মূল কার্ড --}}
         <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xl sm:rounded-2xl p-6 sm:p-8">

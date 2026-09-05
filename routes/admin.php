@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BackupController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SettingController;
@@ -10,6 +11,15 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/dashboard', 'index')->name('dashboard');
     });
 
+    // for app back file
+    Route::controller(BackupController::class)->group(function () {
+        Route::get('/backups', 'index')->name('backups.index');
+        Route::get('/backups/create', 'create')->name('backups.create');
+        Route::get('/backups/download/{file_name}', 'download')->name('backups.download');
+        Route::delete('/backups/delete/{file_name}', 'destroy')->name('backups.delete');
+    });
+
+    // for profile
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/profile', 'index')->name('profile.index');
         Route::get('/profile/edit', 'edit')->name('profile.edit');
@@ -18,9 +28,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::put('/password-update', 'updatePassword')->name('password.update');
     });
 
+    // for settings
     Route::controller(SettingController::class)->group(function () {
         Route::get('/settings', 'index')->name('settings.index');
         Route::put('/settings', 'update')->name('settings.update');
     });
-
 });
