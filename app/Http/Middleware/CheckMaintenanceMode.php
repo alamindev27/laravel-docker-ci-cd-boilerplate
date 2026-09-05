@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Setting;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +16,7 @@ class CheckMaintenanceMode
     public function handle(Request $request, Closure $next): Response
     {
         // ডাটাবেজ থেকে maintenance_mode সেটিংস চেক করা
-        $maintenanceMode = Setting::where('key', 'maintenance_mode')->value('value');
+        $maintenanceMode = setting('maintenance_mode');
 
         if ($maintenanceMode == '1' || $maintenanceMode === 1) {
             // অ্যাডমিনরা বা নির্দিষ্ট রুটগুলো মেইনটেনেন্স মোডের বাইরে রাখতে চাইলে:
