@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string('key')->unique(); // সেটিংসের ইউনিক নাম (যেমন: site_name)
-            $table->text('value')->nullable(); // সেটিংসের ভ্যালু
-            $table->string('type')->default('text'); // ডেটার ধরন (text, file, boolean ইত্যাদি)
+            $table->string('key')->unique();
+            $table->text('value')->nullable();
+            $table->string('type')->default('text');
+            $table->string('group')->nullable();
             $table->timestamps();
         });
     }
