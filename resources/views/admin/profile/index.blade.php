@@ -1,7 +1,7 @@
 @extends('admin.layouts.admin')
 
 @section('content')
-<div class="py-12">
+<div class="py-2">
     <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
 
 
